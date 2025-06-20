@@ -7,25 +7,29 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
-    defaults:
-      run:
-        shell: bash
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Debug - List directory contents
+      run: |
+        pwd
+        ls -la
+        ls -la infra/
+
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
 
     - name: Terraform Init
-      run: terraform init
-      working-directory: ./infra
+      run: |
+        cd infra
+        terraform init
 
     - name: Terraform Apply
-      run: terraform apply -auto-approve
-      working-directory: ./infra
+      run: |
+        cd infra
+        terraform apply -auto-approve
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

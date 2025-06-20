@@ -8,14 +8,17 @@ resource "aws_instance" "hello_ec2" {
   key_name      = "test"
 
   user_data = <<-EOF
-              #!/bin/bash
-              yum update -y
-              amazon-linux-extras install docker -y
-              service docker start
-              docker login -u AWS -p $(aws ecr get-login-password --region ap-southeast-1) 950224715748.dkr.ecr.ap-southeast-1.amazonaws.com
-              docker pull 950224715748.dkr.ecr.ap-southeast-1.amazonaws.com/hello-docker
-              docker run -d --name hello-container 950224715748.dkr.ecr.ap-southeast-1.amazonaws.com/hello-docker
-              EOF
+  #!/bin/bash
+  apt update -y
+  apt install -y docker.io
+  systemctl start docker
+  systemctl enable docker
+
+  docker login -u AWS -p $(aws ecr get-login-password --region ap-southeast-1) 950224715748.dkr.ecr.ap-southeast-1.amazonaws.com
+  docker pull 950224715748.dkr.ecr.ap-southeast-1.amazonaws.com/hello-docker
+  docker run -d -p 80:80 --name hello-container 950224715748.dkr.ecr.ap-southeast-1.amazonaws.com/hello-docker
+EOF
+
 
   tags = {
     Name = "hello-docker-instance"

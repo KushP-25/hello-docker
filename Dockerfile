@@ -1,10 +1,24 @@
-FROM python:3.10-slim
+FROM ubuntu:22.04
+
+# Set environment variables to prevent interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update system and install Python and pip
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Flask
+RUN pip3 install Flask
 
-COPY . .
+# Copy the application
+COPY app.py .
 
-CMD ["python", "app.py"]
+# Expose port 80
+EXPOSE 80
+
+# Run the application
+CMD ["python3", "app.py"]

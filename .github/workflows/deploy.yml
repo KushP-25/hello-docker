@@ -16,19 +16,19 @@ jobs:
       run: |
         pwd
         ls -la
-        ls -la infra/
+        ls -la Infra/
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
 
     - name: Terraform Init
       run: |
-        cd infra
+        cd Infra
         terraform init
 
     - name: Terraform Apply
       run: |
-        cd infra
+        cd Infra
         terraform apply -auto-approve
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}

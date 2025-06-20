@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "hello_ec2" {
-  ami           = "ami-0c55b159cbfafe1f0" # Amazon Linux 2
+  ami           = "ami-0fa377108253bf620" 
   instance_type = "t2.micro"
   key_name      = "test"
 

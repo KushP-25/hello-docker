@@ -2,35 +2,9 @@ provider "aws" {
   region = "ap-southeast-1"
 }
 
-# Security group to allow HTTP and SSH traffic
-resource "aws_security_group" "web_sg" {
-  name        = "hello-docker-sg"
-  description = "Allow HTTP and SSH traffic"
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "hello-docker-sg"
-  }
+# Use existing security group
+data "aws_security_group" "web_sg" {
+  name = "hello-docker-sg"
 }
 
 resource "aws_instance" "hello_ec2" {
